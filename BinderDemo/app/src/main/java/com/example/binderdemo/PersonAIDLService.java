@@ -22,7 +22,6 @@ public class PersonAIDLService extends Service {
         Log.d("PersonAIDLService", "onBind: ");
         return binder;
     }
-    
     Binder binder = new IPersonInterface.Stub() {
         @Override
         public void addPerson(Person person) throws RemoteException {
