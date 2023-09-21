@@ -19,24 +19,26 @@ public class PersonAIDLService extends Service {
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        Log.d("PersonAIDLService", "onBind: ");
+        Log.d("PersonAIDLService", "onBind");
         return binder;
     }
+
     Binder binder = new IPersonInterface.Stub() {
         @Override
-        public void addPerson(Person person) throws RemoteException {
-            Log.d("PersonAIDLService", "addPerson: persons=" + persons.toString());
+        public void addPersonIn(Person person) throws RemoteException {
+            Log.d("PersonAIDLService", "addPersonIn: persons=" + persons.toString());
             if (callback != null){
-                callback.onResponse("服务端正在调用addPerson "+person.toString());
+                callback.onResponse("服务端调用addPerson " + person.toString());
             }
-            person.id = person.id+1;
+            person.id = person.id + 1;
             persons.add(person);
         }
 
         @Override
         public void addPersonOut(Person person) throws RemoteException {
+            Log.d("PersonAIDLService", "addPersonOut: persons=" + persons.toString());
             if (callback != null){
-                callback.onResponse("服务端正在调用addPersonOut " + person.toString());
+                callback.onResponse("服务端调用addPersonOut " + person.toString());
             }
             person.id = person.id + 1;
             persons.add(person);
@@ -44,8 +46,9 @@ public class PersonAIDLService extends Service {
 
         @Override
         public void addPersonInout(Person person) throws RemoteException {
+            Log.d("PersonAIDLService", "addPersonInout: persons=" + persons.toString());
             if (callback != null){
-                callback.onResponse("服务端正在调用addPersonInOut "+person.toString());
+                callback.onResponse("服务端调用addPersonInOut "+person.toString());
             }
             person.id = person.id + 1;
             person.name = "inout-1";

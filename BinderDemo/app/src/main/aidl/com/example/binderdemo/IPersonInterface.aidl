@@ -8,7 +8,7 @@ import com.example.binderdemo.Person;
 
 interface IPersonInterface {
 
-    void addPerson(in Person person);
+    void addPersonIn(in Person person);
     void addPersonOut(out Person person);
     void addPersonInout(inout Person person);
 

@@ -26,40 +26,9 @@ public class ServiceAidlActivity extends AppCompatActivity implements View.OnCli
     private final String TAG = "ServiceAidlActivity";
     private IPersonInterface iPersonManager;
 
-    private ServiceConnection conn = new ServiceConnection() {
-        // Activity与Service连接成功时回调该方法
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            Log.i(TAG,"onServiceConnected");
-            iPersonManager = IPersonInterface.Stub.asInterface(service);
-            try {
-                iPersonManager.addCallback(callback);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        }
-
-        // Activity与Service断开连接时回调该方法
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            Log.i(TAG,"onServiceDisconnected");
-        }
-    };
-
-    private ICallback callback = new ICallback.Stub() {
-        @Override
-        public void onResponse(String tag) throws RemoteException {
-            Log.i(TAG,"客户端的方法, tag = " + tag);
-        }
-
-        @Override
-        public void basicTypes(int anInt, long aLong, boolean aBoolean, float aFloat, double aDouble, String aString) throws RemoteException {
-
-        }
-    };
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        Log.i(TAG,"onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_service_aidl_ipc);
 
@@ -89,7 +58,7 @@ public class ServiceAidlActivity extends AppCompatActivity implements View.OnCli
                 bindRemoteService();
                 break;
             case R.id.ac_ipcservice_set_in:
-                setPerson();
+                setPersonIn();
                 break;
             case R.id.ac_ipcservice_set_out:
                 setPersonOut();
@@ -118,23 +87,55 @@ public class ServiceAidlActivity extends AppCompatActivity implements View.OnCli
         super.onDestroy();
     }
 
+    private ICallback callback = new ICallback.Stub() {
+        @Override
+        public void onResponse(String tag) throws RemoteException {
+            Log.i(TAG,"客户端的方法, tag = " + tag);
+        }
+
+        @Override
+        public void basicTypes(int anInt, long aLong, boolean aBoolean, float aFloat, double aDouble, String aString) throws RemoteException {
+
+        }
+    };
+
+    private ServiceConnection conn = new ServiceConnection() {
+        // Activity与Service连接成功时回调该方法
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            Log.i(TAG,"onServiceConnected");
+            iPersonManager = IPersonInterface.Stub.asInterface(service);
+            try {
+                iPersonManager.addCallback(callback);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // Activity与Service断开连接时回调该方法
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            Log.i(TAG,"onServiceDisconnected");
+        }
+    };
+
     private void bindRemoteService(){
         Intent intent = new Intent();
-        intent.setComponent(new ComponentName("com.example.binderdemo",
-                "com.example.binderdemo.PersonAIDLService"));
+        ComponentName componentName = new ComponentName("com.example.binderdemo", "com.example.binderdemo.PersonAIDLService");
+        intent.setComponent(componentName);
         boolean isBind = bindService(intent, conn, Service.BIND_AUTO_CREATE);
         Log.i(TAG,"bindRemoteService isBind = " + isBind);
     }
 
-    private void setPerson(){
+    private void setPersonIn(){
         if (iPersonManager == null){
             return;
         }
         try {
             Person person = new Person(24, "in");
-            Log.d(TAG, " setPerson-1" + person.toString());
-            iPersonManager.addPerson(person);
-            Log.d(TAG, " setPerson" + person.toString());
+            Log.d(TAG, " setPersonIn " + person.toString());
+            iPersonManager.addPersonIn(person);
+            Log.d(TAG, " setPersonIn " + person.toString());
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -146,9 +147,9 @@ public class ServiceAidlActivity extends AppCompatActivity implements View.OnCli
         }
         try {
             Person person = new Person(32, "out");
-            Log.d(TAG, " setPersonOut" + person.toString());
+            Log.d(TAG, " setPersonOut " + person.toString());
             iPersonManager.addPersonOut(person);
-            Log.d(TAG, " setPersonOut-1" + person.toString());
+            Log.d(TAG, " setPersonOut " + person.toString());
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -160,9 +161,9 @@ public class ServiceAidlActivity extends AppCompatActivity implements View.OnCli
         }
 //        try {
 //            Person person = new Person(40, "inout");
-//            Log.d(TAG, " setPersonInOut" + person.toString());
+//            Log.d(TAG, " setPersonInOut " + person.toString());
 //            iPersonManager.addPersonInOut(person);
-//            Log.d(TAG, " setPersonInOut-1" + person.toString());
+//            Log.d(TAG, " setPersonInOut " + person.toString());
 //        } catch (RemoteException e) {
 //            e.printStackTrace();
 //        }
@@ -174,7 +175,7 @@ public class ServiceAidlActivity extends AppCompatActivity implements View.OnCli
         }
         try {
             List<Person> persons = iPersonManager.getPersonList();
-            Log.d(TAG, " 获取的数据" + persons.toString());
+            Log.d(TAG, "获取的数据 " + persons.toString());
         } catch (RemoteException e) {
             e.printStackTrace();
         }
