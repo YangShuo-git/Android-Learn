@@ -14,7 +14,10 @@ import java.util.List;
 
 public class PersonAIDLService extends Service {
     ArrayList<Person> persons = new ArrayList<Person>();
-    private ICallback callback; // 是在客户端实现的
+    private ICallback callback;
+
+    // AIDL的ICallback接口是在客户端实现的;
+    // AIDL的IPersonInterface接口是在服务端实现的;
 
     @Nullable
     @Override

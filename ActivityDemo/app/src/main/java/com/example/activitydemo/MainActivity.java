@@ -13,20 +13,13 @@ import com.example.activitydemo.activity.ServiceAidlActivity;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener  {
     public static final String TAG = "MainActivity";
     private Button serviceBasicBtn;
-
     private Button serviceExampleBtn;
-
     private Button serviceAidlIpcBtn;
-
     private Button serviceMessagerIpcBtn;
-
     private Button contentProviderBasicBtn;
     private Button demoProviderBtn;
-
     private Button broadcastBtn;
-
     private Button broadcastPermissionBtn;
-
     private Button intentBtn;
 
     @Override
