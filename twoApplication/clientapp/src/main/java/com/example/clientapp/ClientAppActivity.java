@@ -33,9 +33,9 @@ public class ClientAppActivity extends AppCompatActivity implements View.OnClick
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             mBinder = ITwoAppInterface.Stub.asInterface(service);
+
             mCount++;
             Log.i(TAG, "onServiceConnected:  count = " + mCount);
-
             try {
                 String strData = "第" + mCount + "次连接Service成功！";
                 mBinder.setStringData(strData);

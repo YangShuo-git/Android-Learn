@@ -14,10 +14,4 @@ public class ServiceAppActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Log.i(TAG, "onCreate: ServiceAppActivity");
     }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.i(TAG, "onDestroy()");
-    }
 }

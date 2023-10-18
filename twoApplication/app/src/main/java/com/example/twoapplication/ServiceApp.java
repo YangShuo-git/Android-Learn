@@ -57,10 +57,4 @@ public class ServiceApp extends Service {
         mServiceRunning = false;
         return true;
     }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.i(TAG, "onDestroy: ");
-    }
 }
